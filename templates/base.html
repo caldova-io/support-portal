@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Robobites Support</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; color: #172033; }
+    nav a { margin-right: 1rem; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th, td { border-bottom: 1px solid #dde3ec; padding: .6rem; text-align: left; }
+    label { display: block; margin-top: .7rem; font-weight: 600; }
+    input, textarea, select { width: 100%; max-width: 680px; padding: .45rem; }
+    .card { border: 1px solid #dde3ec; border-radius: 8px; padding: 1rem; margin: 1rem 0; }
+    .messages { color: #14532d; }
+  </style>
+</head>
+<body>
+  <nav>
+    <strong>Robobites Support</strong>
+    <a href="{% url 'portal:inbox' %}">Inbox</a>
+    <a href="{% url 'portal:search' %}">Search</a>
+    <a href="{% url 'portal:new_ticket' %}">New ticket</a>
+    <a href="{% url 'portal:imports' %}">Imports</a>
+  </nav>
+  {% if messages %}<div class="messages">{% for message in messages %}<p>{{ message }}</p>{% endfor %}</div>{% endif %}
+  {% block content %}{% endblock %}
+</body>
+</html>

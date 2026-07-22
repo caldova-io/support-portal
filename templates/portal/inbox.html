@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Ticket inbox</h1>
+<table>
+  <tr><th>Reference</th><th>Customer</th><th>Subject</th><th>Status</th><th>Priority</th></tr>
+  {% for ticket in tickets %}
+  <tr>
+    <td><a href="{% url 'portal:ticket_detail' ticket.id %}">{{ ticket.reference }}</a></td>
+    <td>{{ ticket.customer_name }}</td>
+    <td>{{ ticket.subject }}</td>
+    <td>{{ ticket.status }}</td>
+    <td>{{ ticket.priority }}</td>
+  </tr>
+  {% empty %}<tr><td colspan="5">No tickets in this queue.</td></tr>{% endfor %}
+</table>
+{% endblock %}

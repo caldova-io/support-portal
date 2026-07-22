@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Search tickets</h1>
+<form method="get">
+  <label for="q">Search text</label>
+  <input id="q" name="q" value="{{ term }}">
+  <button type="submit">Search</button>
+</form>
+<table>
+  <tr><th>Reference</th><th>Customer</th><th>Subject</th><th>Status</th><th>Priority</th></tr>
+  {% for row in results %}
+  <tr>
+    <td><a href="{% url 'portal:ticket_detail' row.id %}">{{ row.reference }}</a></td>
+    <td>{{ row.customer_name }}</td>
+    <td>{{ row.subject }}</td>
+    <td>{{ row.status }}</td>
+    <td>{{ row.priority }}</td>
+  </tr>
+  {% empty %}<tr><td colspan="5">No matching tickets.</td></tr>{% endfor %}
+</table>
+{% endblock %}

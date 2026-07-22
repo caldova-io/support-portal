@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Operations imports</h1>
+<p>Upload a handoff bundle from the operations queue.</p>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <label for="bundle">Bundle</label>
+  <input id="bundle" name="bundle" type="file">
+  <button type="submit">Import</button>
+</form>
+{% if created %}
+<h2>Imported</h2>
+<ul>{% for ticket in created %}<li><a href="{% url 'portal:ticket_detail' ticket.id %}">{{ ticket.reference }}</a> {{ ticket.subject }}</li>{% endfor %}</ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ ticket.reference }}: {{ ticket.subject }}</h1>
+<div class="card">
+  <p><strong>Customer:</strong> {{ ticket.customer_name }}</p>
+  <p><strong>Address:</strong> {{ ticket.delivery_address }}</p>
+  <p><strong>Robot:</strong> {{ ticket.robot_unit }}</p>
+  <p><strong>Status:</strong> {{ ticket.status }} | <strong>Priority:</strong> {{ ticket.priority }}</p>
+  <p><strong>Response due:</strong> {{ due_at }}</p>
+  <p>{{ ticket.description }}</p>
+</div>
+<h2>Notes</h2>
+{% for note in ticket.notes.all %}
+  <div class="card"><strong>{{ note.author }}</strong><br>{{ note.body|linebreaks }}</div>
+{% empty %}<p>No notes yet.</p>{% endfor %}
+<h2>Add response</h2>
+<form method="post" action="{% url 'portal:reply' ticket.id %}">
+  {% csrf_token %}
+  {{ reply_form.as_p }}
+  <button type="submit">Save response</button>
+</form>
+<h2>Attachments</h2>
+<ul>{% for item in ticket.attachments.all %}<li>{{ item.original_name }} stored as {{ item.stored_name }}</li>{% empty %}<li>No attachments.</li>{% endfor %}</ul>
+<form method="post" enctype="multipart/form-data" action="{% url 'portal:upload_attachment' ticket.id %}">
+  {% csrf_token %}
+  {{ attachment_form.as_p }}
+  <button type="submit">Upload</button>
+</form>
+{% endblock %}

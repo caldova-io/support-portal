@@ -1,6 +1,6 @@
-# Robobites Support Portal
+# Caldova Support Portal
 
-A Django console for Robobites support teams handling delivery issues, robot status questions, refund requests, and customer follow-up.
+A Django console for Caldova support teams handling delivery issues, robot status questions, refund requests, and customer follow-up.
 
 ## Features
 
@@ -28,4 +28,4 @@ Open `http://127.0.0.1:8000/` and set a `customer_key` cookie to view a customer
 2. Search by reference, address, robot id, or customer name.
 3. Open a ticket, add an agent response, and update the status.
 4. Upload supporting material when a customer sends delivery photos or receipts.
-5. Use imports for batched handoffs from operations.
+5. Use imports for batched handoffs from operations.

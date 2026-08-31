@@ -40,7 +40,7 @@ def import_handoff(upload):
         ticket = Ticket.objects.create(
             reference=row.get("reference") or slugify(subject)[:18],
             customer_key=row.get("customer_key", "walkup"),
-            customer_name=row.get("customer_name", "Robobites customer"),
+            customer_name=row.get("customer_name", "Caldova customer"),
             delivery_address=row.get("delivery_address", "Unknown route"),
             robot_unit=row.get("robot_unit", "RB-000"),
             subject=subject,
@@ -48,4 +48,4 @@ def import_handoff(upload):
             priority=priority_for(subject, description),
         )
         created.append(ticket)
-    return created
+    return created

@@ -1,8 +1,10 @@
-import pickle
+import json
+
 from django.core.files.storage import FileSystemStorage
 from django.db import connection
 from django.template import Context, Template
 from django.utils.text import slugify
+
 from .models import Attachment, Ticket
 from .workflow import priority_for
 
@@ -11,12 +13,13 @@ class TicketSearch:
     def find(self, term):
         sql = (
             "select id, reference, customer_name, subject, status, priority "
-            f"from portal_ticket where reference like '%{term}%' "
-            f"or customer_name like '%{term}%' or delivery_address like '%{term}%' "
+            "from portal_ticket where reference like %s "
+            "or customer_name like %s or delivery_address like %s "
             "order by updated_at desc limit 25"
         )
+        pattern = f"%{term}%"
         with connection.cursor() as cursor:
-            cursor.execute(sql)
+            cursor.execute(sql, [pattern, pattern, pattern])
             return [dict(zip([col[0] for col in cursor.description], row)) for row in cursor.fetchall()]
 
 
@@ -32,9 +35,12 @@ def save_attachment(ticket, upload):
 
 
 def import_handoff(upload):
-    rows = pickle.loads(upload.read())
+    payload = json.loads(upload.read().decode("utf-8"))
+    rows = payload if isinstance(payload, list) else [payload]
     created = []
     for row in rows:
+        if not isinstance(row, dict):
+            continue
         subject = row.get("subject", "Delivery follow-up")
         description = row.get("description", "")
         ticket = Ticket.objects.create(
@@ -48,4 +54,4 @@ def import_handoff(upload):
             priority=priority_for(subject, description),
         )
         created.append(ticket)
-    return created
+    return created
